@@ -6,19 +6,18 @@ const { ApolloServer, gql } = require('apollo-server');
     //Mutation
 
     //Schemas
-    const books = [
+    const blogs = [
     
         {
             title: "Unwind",
             author: "Neal Shusterman",
-            ISBN: "1-3645-5643"
+            DateOFBlog: "1-3645-5643",
+            comments:'',
+            likes: null,
+            dislikes: null,
+
         },
     
-        {
-            title: "Unwind",
-            author: "Neal Shusterman",
-            ISBN: "1-3645-5643"
-        }
     ];
     
     
@@ -27,50 +26,53 @@ const { ApolloServer, gql } = require('apollo-server');
     //typeDefs
     const schemas = gql`
     
-        type Book {
+        type Blog {
             title: String!
             author: String!
-            ISBN: String
+            DateOFBlog: String!
+            comments: String!
+            likes: Int
+            dislikes: Int
         }
         
         type Query {
-            books: [Book]
-            book(title: String!): Book
-            ISBN: String
+            blogs: [Blog]
+            blog(title: String!): String!
+            DateOFBlog: String!
         }
         
         #type Mutation
         type Mutation {
-            createBook(title: String!, author: String!, ISBN: String): Book
+            createBlog(title: String!, author: String!, DateOFBlog: String): Blog
         }
         
         #type Subscribtion
     `;
     
     //Resolvers
-    const booksResolvers = {
+    const blogResolvers = {
         Query: {
-            books: () => books,
-            book: (parent, args) => books.find(book => book.title === args.title)
+            blogs: () => blogs,
+            blog: (parent, args) => blogs.find(blog => blog.title === args.title)
         },
     
         Mutation: {
-            createBook: ( parents, args) => {
+            createBlogs: ( parents, args) => {
                 
-                const { title, author, ISBN } = args;
+                const { title, author, DateOFBlog } = args;
     
-                const book = { title, author, ISBN };
+                const blog = { title, author, DateOFBlog };
     
-                books.push(book);
+                blogs.push(blog);
     
-                return(book);
+                return(blog);
     
             },
         }
         // Mutation: {}
     }
     
-    const serve = new ApolloServer({ typeDefs: schemas, resolvers: booksResolvers});
+    const serve = new ApolloServer({ typeDefs: schemas, resolvers: blogResolvers});
     
     serve.listen(8000)
     .then(({ url }) => {
