@@ -1,20 +1,49 @@
 const { ApolloServer, gql } = require('apollo-server');
 
-//Schemas
-//typeDefs
-//Resolvers
+    //Schemas
+    //typeDefs
+    //Resolvers
     //Mutation
 
     //Schemas
     const blogs = [
     
         {
-            title: "Unwind",
-            author: "Neal Shusterman",
-            DateOFBlog: "1-3645-5643",
-            comments:'',
-            likes: null,
-            dislikes: null,
+            title: "Graphql",
+            author: "Facebook",
+            DateOfBlog: "2012",
+            comments: '',
+            likes: 0,
+            dislikes: 0,
+        },
+
+        {
+            title: "Graphql",
+            author: "Facebook",
+            DateOfBlog: "2012",
+            comments: '',
+            likes: 0,
+            dislikes: 0,
+
+        },
+
+        {
+            title: "Graphql",
+            author: "Facebook",
+            DateOfBlog: "2012",
+            comments: '',
+            likes: 0,
+            dislikes: 0,
+
+        },
+
+        {
+            title: "Graphql",
+            author: "Facebook",
+            DateOfBlog: "2012",
+            comments: '',
+            likes: 0,
+            dislikes: 0,
 
         },
     
@@ -23,58 +52,101 @@ const { ApolloServer, gql } = require('apollo-server');
     
     
     
-    //typeDefs
+    //the schema for the server
     const schemas = gql`
-    
+        #what does type even mean in graphql???
         type Blog {
+            #the fields every blog should have
+            blogID: ID
             title: String!
             author: String!
-            DateOFBlog: String!
+            DateOfBlog: String!
+            banner: String
             comments: String!
             likes: Int
             dislikes: Int
         }
+
+        #I guess we should add types for all our mandatory fields
+
+        #type Author{}
+        #type Comment{}
+        
         
         type Query {
-            blogs: [Blog]
-            blog(title: String!): String!
-            DateOFBlog: String!
+            allTheBlogs: [Blog]
+            blogByID(blogID: ID): Blog
+            DateOfBlog: String!
         }
         
         #type Mutation
-        type Mutation {
-            createBlog(title: String!, author: String!, DateOFBlog: String): Blog
-        }
+      #  type Mutation   createBlog(title: String!, author: String!, DateOFBlog: String!): Blog      }
         
-        #type Subscribtion
+        #type Subscription
     `;
     
     //Resolvers
     const blogResolvers = {
         Query: {
-            blogs: () => blogs,
-            blog: (parent, args) => blogs.find(blog => blog.title === args.title)
+            allTheBlogs: () => blogs,
+            blogByID: (parent, args) => blogs.find(blogs1 => blogs.title === args.title)
         },
     
-        Mutation: {
-            createBlogs: ( parents, args) => {
+        // Mutation: {
+        //     createBlogs: ( parents, args) => {
                 
-                const { title, author, DateOFBlog } = args;
+        //         const { title, author, DateOfBlog } = args;
     
-                const blog = { title, author, DateOFBlog };
+        //         const blog = { title, author, DateOfBlog };
     
-                blogs.push(blog);
+        //         blogs.push(blog);
     
-                return(blog);
+        //         return(blog);
     
-            },
+        //     },
+
+            // deleteBlogs: ( parents, args) => {
+                
+            //     const { title, author, DateOfBlog } = args;
+    
+            //     const blog = { title, author, DateOfBlog };
+    
+            //     blogs.push(blog);
+    
+            //     return(blog);
+    
+            // },
+
+            // updateBlogs: ( parents, args) => {
+                
+            //     const { title, author, DateOfBlog } = args;
+    
+            //     const blog = { title, author, DateOfBlog };
+    
+            //     blogs.push(blog);
+    
+            //     return(blog);
+    
+            // },
+
+            // Blogs: ( parents, args) => {
+                
+            //     const { title, author, DateOfBlog } = args;
+    
+            //     const blog = { title, author, DateOfBlog };
+    
+            //     blogs.push(blog);
+    
+            //     return(blog);
+    
+            // },
         }
         // Mutation: {}
-    }
+    
     
     const serve = new ApolloServer({ typeDefs: schemas, resolvers: blogResolvers});
     
-    serve.listen(8000)
+    serve.listen(9000)
     .then(({ url }) => {
         console.log(`Server ready at ${url}`);
     }) 
